@@ -9,6 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "December1", "December1", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondPuzzle", "December1\SecondPuzzle\SecondPuzzle.csproj", "{4F51B5DF-310A-4885-A9E4-85F619EBAF51}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "December2", "December2", "{C47DB80F-055D-4088-ABED-D37DDBCFE77A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstPuzzle", "December2\FirstPuzzle\FirstPuzzle.csproj", "{1CF50168-556B-4B40-AA70-7770759932B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondPuzzle", "December2\SecondPuzzle\SecondPuzzle.csproj", "{22D39BD9-9F66-4A19-B25A-B55506599226}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +32,18 @@ Global
 		{4F51B5DF-310A-4885-A9E4-85F619EBAF51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F51B5DF-310A-4885-A9E4-85F619EBAF51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F51B5DF-310A-4885-A9E4-85F619EBAF51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF50168-556B-4B40-AA70-7770759932B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF50168-556B-4B40-AA70-7770759932B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF50168-556B-4B40-AA70-7770759932B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF50168-556B-4B40-AA70-7770759932B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22D39BD9-9F66-4A19-B25A-B55506599226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D39BD9-9F66-4A19-B25A-B55506599226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D39BD9-9F66-4A19-B25A-B55506599226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D39BD9-9F66-4A19-B25A-B55506599226}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4F51B5DF-310A-4885-A9E4-85F619EBAF51} = {05BF4532-8393-4FDA-AE43-DB9504305E46}
+		{1CF50168-556B-4B40-AA70-7770759932B6} = {C47DB80F-055D-4088-ABED-D37DDBCFE77A}
+		{22D39BD9-9F66-4A19-B25A-B55506599226} = {C47DB80F-055D-4088-ABED-D37DDBCFE77A}
 	EndGlobalSection
 EndGlobal
