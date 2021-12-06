@@ -9,12 +9,12 @@ public class Program
 
     static List<string> AllPoints = new List<string>();
 
-    static int NumberOfDub = 0;
+    static List<string> dub = new List<string>();
     public static void Main()
     {
 
 
-        foreach (var item in System.IO.File.ReadLines(@"../test.txt"))
+        foreach (var item in System.IO.File.ReadLines(@"../input.txt"))
         {
             string[] line = item.Split(" -> ");
 
@@ -36,6 +36,7 @@ public class Program
                     //Console.WriteLine("V: CoordOne {0}, CoordTwo {1}", vector.CoordOne, vector.CoordTwo);
                     
                     vectors.Add(vector);
+                    
                     vector = new Vector();
                 }
 
@@ -51,7 +52,7 @@ public class Program
 
         FindDublicates();
 
-        Console.WriteLine(NumberOfDub);
+        Console.WriteLine(dub.Count());
     }
 
     public static void LoadVectors()
@@ -66,12 +67,16 @@ public class Program
     {
         List<string> tmpList = new List<string>();
 
+        
+
         foreach (var item in AllPoints)
         {
             if(!tmpList.Contains(item)){
                 tmpList.Add(item);
-            } else {
-                NumberOfDub++;
+            } else if(tmpList.Contains(item)){
+                if(!dub.Contains(item)){
+                    dub.Add(item); 
+                }
             }
         }
 
