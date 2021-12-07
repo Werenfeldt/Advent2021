@@ -1,6 +1,6 @@
 ﻿public class Program
 {
-    static string[]? NumbersToBeDrawn;
+    static string[] NumbersToBeDrawn;
 
     static Board board = new Board();
 
