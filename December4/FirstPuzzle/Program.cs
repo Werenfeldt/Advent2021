@@ -1,6 +1,6 @@
 ﻿public class Program
 {
-    static string[] NumbersToBeDrawn;
+    static string[]? NumbersToBeDrawn;
 
     static Board board = new Board();
 
@@ -63,7 +63,7 @@
                 bingo = boards.ElementAt(j).DrawNumbers(Convert.ToInt32(NumbersToBeDrawn.ElementAt(i)));
 
                 Console.WriteLine("Program: " + bingo);
-                
+
                 if (bingo)
                 {
                     if (boards.Count > 1)
@@ -71,8 +71,8 @@
                         Console.WriteLine("Bingo therefore remove board: " + boards.ElementAt(j).getBoardnumber());
                         Console.WriteLine("index: " + j);
                         bingoelement.Add(boards.ElementAt(j));
-                        
-                        
+
+
                     }
                     else
                     {
@@ -83,11 +83,12 @@
                         Console.WriteLine("Sum: " + Convert.ToInt32(NumbersToBeDrawn.ElementAt(i)) * tmp);
                         return bingo;
                     }
-                    
+
                 }
 
             }
-            if(bingoelement.Any()){
+            if (bingoelement.Any())
+            {
                 Console.WriteLine("Removing board number: " + bingoelement.ElementAt(0).getBoardnumber());
                 boards.RemoveAll(bingoelement.Contains);
                 bingoelement.RemoveRange(0, bingoelement.Count);
