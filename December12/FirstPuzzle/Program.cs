@@ -7,9 +7,7 @@ public class Program
     //name, name, visites
     //static Node[] PathIndex = new Node[20];
 
-    static List<Node> PathIndex = new List<Node>();
-
-    static Node[]? Path;
+    static Dictionary<String, List<Node>> dict = new Dictionary<string, List<Node>>();
 
     static List<string> PathString = new List<string>();
 
@@ -21,127 +19,45 @@ public class Program
     public static void Main()
     {
         //int pathIndex = 0;
-
+        //Adds nodes to graph(dict)
         foreach (var item in System.IO.File.ReadLines(@"../test.txt"))
         {
             string[] line = item.Split("-");
 
-            Node firstNode;
-            Node secondNode;
-
-            if (line[0] == "start" || !line[0].Any(char.IsUpper) || line[0] == "end")
+            foreach (var stringNode in line)
             {
-                firstNode = new Node(line[0], false, false);
-            }
-            else
-            {
-                firstNode = new Node(line[0], true, false);
-            }
-
-            if (line[1] == "start" || !line[1].Any(char.IsUpper) || line[1] == "end")
-            {
-                secondNode = new Node(line[1], false, false);
-            }
-            else
-            {
-                secondNode = new Node(line[1], true, false);
-            }
-
-
-            if (!PathIndex.Exists(x => x.Name == firstNode.Name))
-            {
-                // PathIndex[pathIndex] = firstNode;
-                // pathIndex++;
-                //Console.WriteLine("Does not contain: " + firstNode.Name);
-                if (firstNode.Name != "end")
+                Node node;
+                if (stringNode == "start" || stringNode.Any(char.IsUpper) || stringNode == "end")
                 {
-
-                    firstNode.AddPointsAtNode(secondNode);
-                    PathIndex.Add(firstNode);
+                    node = new Node(stringNode, false, false);
+                }
+                else
+                {
+                    node = new Node(stringNode, true, false);
                 }
 
-            }
-            else
-            {
+                List<Node> listOfNode = new List<Node>();
 
-                //Console.WriteLine("Does contain: " + firstNode.Name);
-                PathIndex.Find(x => x.Name == firstNode.Name).AddPointsAtNode(secondNode);
-            }
+                dict.TryGetValue(stringNode, out listOfNode);
 
-            if (!PathIndex.Exists(x => x.Name == secondNode.Name))
-            {
-                // PathIndex[pathIndex] = secondNode;
-                // pathIndex++;
-                //Console.WriteLine("Does not contain: " + secondNode.Name);
+                listOfNode.Add(node);
 
-
-
-                if (firstNode.Name != "start")
-                {
-                    secondNode.AddPointsAtNode(firstNode);
-                }
-                if (secondNode.Name != "end")
-                {
-                    PathIndex.Add(secondNode);
-                }
-            }
-            else
-            {
-                if (firstNode.Name != "start")
-                {
-
-                    PathIndex.Find(x => x.Name == secondNode.Name).AddPointsAtNode(firstNode);
-                }
-                //Console.WriteLine("Does contain: " + secondNode.Name);
-            }
-
-            Path = PathIndex.ToArray();
-
-        }
-
-        // if (CanVisitNode(0))
-        // {
-        //     VisitNode(0);
-        // }
-
-        //while (!CanVisitNode(PathIndex.ElementAt(0))) ;
-
-        CanVisitNode(PathIndex.ElementAt(0));
-
-        PathString.Add(tmpPath);
-
-        if (PathString != null)
-        {
-
-            foreach (var node in PathString)
-            {
-                Console.WriteLine(node);
-
+                dict.Add(stringNode, listOfNode);
             }
         }
-
-        // if (Path != null)
-        // {
-
-        //     foreach (var node in Path)
-        //     {
-        //         node.PrintInfo();
-
-        //     }
-        // }
     }
 
-    public static void CanVisitNode(Node node)
+    public static bool CanVisitNode(Node node)
     {
-        if (node.Uppercase && node.Visited || !node.Visited)
+        if (node.Uppercase || !node.Visited)
         {
             Console.WriteLine("This node can be visited: " + node.Name);
             VisitNode(node);
-            //return true;
+            return true;
         }
         else
         {
-            //return false;
+            return false;
         }
     }
 
@@ -149,36 +65,33 @@ public class Program
     {
         Console.WriteLine("This node has been visited: " + node.Name);
         node.Visited = true;
-        AddToPath(node);
+    }
+
+    public static void RemoveNodeBecauseVisited(Node node)
+    {
+
     }
 
 
-    public static void AddToPath(Node node)
+    public static void FindToPath(Node node)
     {
-        if (visitEle == -1)
-        {
 
-            visitEle++;
-        }
-        Console.WriteLine(visitEle);
-        tmpPath += node.Name;
         if (node.Name != "end")
         {
-            if (!node.PointsAt.ElementAt(visitEle).Visited)
-            {
-                Console.WriteLine("hej");
+            List<Node> adj = new List<Node>();
+            dict.TryGetValue(node.Name, out adj);
 
-                Console.WriteLine("This node points at: " + node.PointsAt.ElementAt(visitEle).Name);
-                CanVisitNode(node.PointsAt.ElementAt(visitEle));
-            }
-            else
-            {
-                visitEle++;
-            }
+            var nextNode = adj.First();
 
+            if (CanVisitNode(node))
+            {
+                VisitNode(node);
+                FindToPath(nextNode);
+                // og så rekursivt kald
+            }
+            
+            var newAdj = adj.Remove(nextNode);
 
         }
     }
-
-    public static int visitEle = -1;
 }
