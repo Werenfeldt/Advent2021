@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿
 public class Program
 {
 
-    static Dictionary<Node, List<Node>> dict = new Dictionary<Node, List<Node>>();
+    static Dictionary<String, Node> dict = new Dictionary<string, Node>();
 
     static int totalPath = 0;
 
@@ -22,73 +22,73 @@ public class Program
 
             if (first == "start")
             {
-                List<Node> listOfNode = new List<Node>();
-
-                if (dict.TryGetValue(firstNode, out listOfNode))
+                if (!dict.ContainsKey(first))
                 {
-                    listOfNode.Add(secondNode);
-                    dict[firstNode] = listOfNode;
+                    firstNode.Add(secondNode);
+                    dict.Add(first, firstNode);
                 }
                 else
                 {
-                    dict.Add(firstNode, new List<Node>() { secondNode });
+                    Node node = dict[first];
+                    node.Add(secondNode);
+                    dict.Add(first, node);  
                 }
 
             }
             else if (second == "start")
             {
-                List<Node> listOfNode = new List<Node>();
-                if (dict.TryGetValue(secondNode, out listOfNode))
+                if (!dict.ContainsKey(second))
                 {
-                    listOfNode.Add(firstNode);
-                    dict[secondNode] = listOfNode;
+                    firstNode.Add(firstNode);
+                    dict.Add(second, secondNode);
                 }
                 else
                 {
-                    dict.Add(secondNode, new List<Node>() { firstNode });
+                    Node node = dict[second];
+                    node.Add(firstNode);
+                    dict.Add(second, node);  
                 }
             }
             else
             {
-                List<Node> listOfNode = new List<Node>();
-
-                if (dict.TryGetValue(firstNode, out listOfNode))
+                if (!dict.ContainsKey(first))
                 {
-                    listOfNode.Add(secondNode);
-                    dict[firstNode] = listOfNode;
+                    firstNode.Add(secondNode);
+                    dict.Add(first, firstNode);
                 }
                 else
                 {
-                    dict.Add(firstNode, new List<Node>() { secondNode });
+                    Node node = dict[first];
+                    node.Add(secondNode);
+                    dict.Add(first, node);  
                 }
 
-                List<Node> secondListOfNode = new List<Node>();
-                if (dict.TryGetValue(secondNode, out secondListOfNode))
+                if (!dict.ContainsKey(second))
                 {
-                    secondListOfNode.Add(firstNode);
-                    dict[secondNode] = secondListOfNode;
+                    firstNode.Add(firstNode);
+                    dict.Add(second, secondNode);
                 }
                 else
                 {
-                    dict.Add(secondNode, new List<Node>() { firstNode });
+                    Node node = dict[second];
+                    node.Add(firstNode);
+                    dict.Add(second, node);  
                 }
             }
         }
 
         foreach (var item in dict)
         {
-            Console.Write(item.Key + " ");
-            foreach (var val in item.Value)
+            foreach (var val in item.Value.adj)
             {
                 Console.Write(val.Name + " ");
             }
             Console.WriteLine();
         }
 
-        var startNode = new Node("start", false, false);
-        var localPath = new List<Node>();
-        FindToPath(startNode, localPath);
-        Console.WriteLine(totalPath);
+        //var startNode = new Node("start", false, false);
+        //FindToPath(startNode, 0);
+        //Console.WriteLine(totalPath);
     }
 
     public static Node makeNode(string str)
@@ -105,9 +105,7 @@ public class Program
 
     public static bool CanVisitNode(Node node)
     {
-        
-
-        if (dict[node].Visited && !node.Uppercase)
+        if (node.Visited && !node.Uppercase)
         {
             return false;
         }
@@ -116,44 +114,35 @@ public class Program
 
     public static void VisitNode(Node node)
     {
-        //Console.WriteLine("This node has been visited: " + node.Name);
-        var newNode = new Node(node.Name, node.Uppercase, true);
-        List<Node>? adj = new List<Node>();
-        dict.TryGetValue(node, out adj);
-        dict.Remove(node);
-        dict.Add(newNode, adj);
-    }
-
-    public static void printPath(List<Node> path){
-        foreach (var item in path)
-        {
-            Console.Write(item.Name + " ");
-        }
-        Console.WriteLine();
+        Console.WriteLine("This node has been visited: " + node.Name);
+        node.Visited = true;
     }
 
 
-    public static void FindToPath(Node node, List<Node> localPaths)
+    public static void FindToPath(Node node, int idx)
     {
-        List<Node>? adj = new List<Node>();
-        dict.TryGetValue(node, out adj);
 
-        if (node.Name == "end")
-        {   
-            printPath(localPaths);
-            totalPath++;
-            return;
-        }
+        // if (node.Name != "end")
+        // {
+        //     List<Node> adj = new List<Node>();
+        //     dict.TryGetValue(node.Name, out adj);
 
-        VisitNode(node);
-        foreach (var localNode in adj)
-        {
-            if (CanVisitNode(localNode))
-            {
-                localPaths.Add(node);
-                FindToPath(localNode, localPaths);
-                localPaths.Remove(node);
-            } 
-        }
+        //     var nextNode = adj[idx];
+
+        //     if (CanVisitNode(nextNode))
+        //     {
+        //         VisitNode(nextNode);
+        //         FindToPath(nextNode, 0);
+        //     }
+        //     else
+        //     {
+        //         FindToPath(node, idx + 1);
+        //     }
+        // }
+        // else
+        // {
+        //     totalPath++;
+        //     return;
+        // }
     }
 }

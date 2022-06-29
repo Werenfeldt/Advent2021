@@ -7,7 +7,7 @@ public class Node
 
     public bool Uppercase { get; set; }
 
-    public List<Node> adj;
+    public List<Node> adj = new List<Node>();
 
     public Node(string _name, bool _upperCase, bool _visited)
     {
@@ -16,7 +16,10 @@ public class Node
         this.Visited = _visited;
         this.adj = new List<Node>();
         //PrintInfo();
+    }
 
+    public void Add(Node node){
+        adj.Add(node);
     }
 
     public void addNode(Node node){
