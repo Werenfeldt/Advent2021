@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿
 public class Program
 {
 
@@ -135,7 +135,7 @@ public class Program
             }
             else
             {
-                FindToPath(node, idx+1);
+                FindToPath(node, idx + 1);
             }
         }
         else
