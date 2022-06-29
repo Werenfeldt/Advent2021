@@ -4,13 +4,19 @@ public class Program
 
     static Dictionary<String, Node> dict = new Dictionary<string, Node>();
 
-    static int totalPath = 0;
+    static List<string> visited = new List<string>();
+
+    static HashSet<string> hashvisited = new HashSet<string>();
+
+    static bool containsDub = false;
+
+    static string dub = string.Empty;
 
     public static void Main()
     {
         //int pathIndex = 0;
         //Adds nodes to graph(dict)
-        foreach (var item in System.IO.File.ReadLines(@"../test.txt"))
+        foreach (var item in System.IO.File.ReadLines(@"../test2.txt"))
         {
             string[] line = item.Split("-");
 
@@ -31,7 +37,7 @@ public class Program
                 {
                     Node node = dict[first];
                     node.Add(secondNode);
-                    dict.Add(first, node);  
+                    dict[first] = node;
                 }
 
             }
@@ -39,14 +45,14 @@ public class Program
             {
                 if (!dict.ContainsKey(second))
                 {
-                    firstNode.Add(firstNode);
+                    secondNode.Add(firstNode);
                     dict.Add(second, secondNode);
                 }
                 else
                 {
                     Node node = dict[second];
                     node.Add(firstNode);
-                    dict.Add(second, node);  
+                    dict[second] = node;
                 }
             }
             else
@@ -60,35 +66,38 @@ public class Program
                 {
                     Node node = dict[first];
                     node.Add(secondNode);
-                    dict.Add(first, node);  
+                    dict[first] = node;
                 }
 
                 if (!dict.ContainsKey(second))
                 {
-                    firstNode.Add(firstNode);
+                    secondNode.Add(firstNode);
                     dict.Add(second, secondNode);
                 }
                 else
                 {
                     Node node = dict[second];
                     node.Add(firstNode);
-                    dict.Add(second, node);  
+                    dict[second] = node;
                 }
             }
         }
 
-        foreach (var item in dict)
-        {
-            foreach (var val in item.Value.adj)
-            {
-                Console.Write(val.Name + " ");
-            }
-            Console.WriteLine();
-        }
+        // foreach (var item in dict.Values)
+        // {
+        //     Console.WriteLine("Node:" + item.Name);
+        //     Console.Write("Adj: ");
+        //     foreach (var val in item.adj)
+        //     {
+        //         Console.Write(val.Name + " ");
+        //     }
+        //     Console.WriteLine();
+        //     Console.WriteLine();
+        // }
 
         //var startNode = new Node("start", false, false);
-        //FindToPath(startNode, 0);
-        //Console.WriteLine(totalPath);
+        var totalPath = StartFindPath();
+        Console.WriteLine(totalPath);
     }
 
     public static Node makeNode(string str)
@@ -105,11 +114,15 @@ public class Program
 
     public static bool CanVisitNode(Node node)
     {
-        if (node.Visited && !node.Uppercase)
+
+        if (node.Uppercase || (visited.Count == visited.Distinct().Count()))
+        {
+            return true;
+        }
+        else
         {
             return false;
         }
-        else { return true; }
     }
 
     public static void VisitNode(Node node)
@@ -118,31 +131,97 @@ public class Program
         node.Visited = true;
     }
 
-
-    public static void FindToPath(Node node, int idx)
+    public static int StartFindPath()
     {
+        var totalPaths = 0;
 
-        // if (node.Name != "end")
-        // {
-        //     List<Node> adj = new List<Node>();
-        //     dict.TryGetValue(node.Name, out adj);
+        totalPaths = FindPath("start", totalPaths);
+        return totalPaths;
+    }
 
-        //     var nextNode = adj[idx];
+    public static bool CanIVisit(Node node)
+    {
+        if (!containsDub)
+        {
+            if (visited.Contains(node.Name) && !node.Uppercase)
+            {
+                visited.Add(node.Name);
+                containsDub = true;
+                dub = node.Name;
+                return true;
+            }
+            else
+            {
+                visited.Add(node.Name);
+                return true;
+            }
+        }
+        else
+        {
+            if (node.Uppercase)
+            {
+                visited.Add(node.Name);
+                return true;
+            }
+            else
+            {
+                if (node.Name == dub)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (visited.Contains(node.Name))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        visited.Add(node.Name);
+                        return true;
+                    }
+                }
+            }
+        }
+    }
 
-        //     if (CanVisitNode(nextNode))
-        //     {
-        //         VisitNode(nextNode);
-        //         FindToPath(nextNode, 0);
-        //     }
-        //     else
-        //     {
-        //         FindToPath(node, idx + 1);
-        //     }
-        // }
-        // else
-        // {
-        //     totalPath++;
-        //     return;
-        // }
+    public static void remove(Node node)
+    {
+        if (containsDub && dub == node.Name)
+        {
+            containsDub = false;
+            visited.Remove(node.Name);
+        }
+        else
+        {
+            visited.Remove(node.Name);
+        }
+    }
+
+
+    public static int FindPath(string u, int totalPath)
+    {
+        var localVisited = visited;
+        var dubBool = containsDub;
+        var localdub = dub;
+
+        if (u == "end")
+        {
+            totalPath++;
+            remove(dict[u]);
+        }
+        else
+        {
+            foreach (var i in dict[u].adj)
+            {
+
+                if (CanIVisit(i))
+                {
+                    totalPath = FindPath(i.Name, totalPath);
+                }
+            }
+            remove(dict[u]);
+        }
+        return totalPath;
     }
 }
