@@ -2,7 +2,7 @@
 public class Program
 {
 
-    static Dictionary<String, List<Node>> dict = new Dictionary<string, List<Node>>();
+    static Dictionary<String, Node> dict = new Dictionary<string, Node>();
 
     static int totalPath = 0;
 
@@ -22,72 +22,73 @@ public class Program
 
             if (first == "start")
             {
-                List<Node> listOfNode = new List<Node>();
-
-                if (dict.TryGetValue(first, out listOfNode))
+                if (!dict.ContainsKey(first))
                 {
-                    listOfNode.Add(secondNode);
-                    dict[first] = listOfNode;
+                    firstNode.Add(secondNode);
+                    dict.Add(first, firstNode);
                 }
                 else
                 {
-                    dict.Add(first, new List<Node>() { secondNode });
+                    Node node = dict[first];
+                    node.Add(secondNode);
+                    dict.Add(first, node);  
                 }
 
             }
             else if (second == "start")
             {
-                List<Node> listOfNode = new List<Node>();
-                if (dict.TryGetValue(second, out listOfNode))
+                if (!dict.ContainsKey(second))
                 {
-                    listOfNode.Add(firstNode);
-                    dict[second] = listOfNode;
+                    firstNode.Add(firstNode);
+                    dict.Add(second, secondNode);
                 }
                 else
                 {
-                    dict.Add(second, new List<Node>() { firstNode });
+                    Node node = dict[second];
+                    node.Add(firstNode);
+                    dict.Add(second, node);  
                 }
             }
             else
             {
-                List<Node> listOfNode = new List<Node>();
-
-                if (dict.TryGetValue(first, out listOfNode))
+                if (!dict.ContainsKey(first))
                 {
-                    listOfNode.Add(secondNode);
-                    dict[first] = listOfNode;
+                    firstNode.Add(secondNode);
+                    dict.Add(first, firstNode);
                 }
                 else
                 {
-                    dict.Add(first, new List<Node>() { secondNode });
+                    Node node = dict[first];
+                    node.Add(secondNode);
+                    dict.Add(first, node);  
                 }
 
-                List<Node> secondListOfNode = new List<Node>();
-                if (dict.TryGetValue(second, out secondListOfNode))
+                if (!dict.ContainsKey(second))
                 {
-                    secondListOfNode.Add(firstNode);
-                    dict[second] = secondListOfNode;
+                    firstNode.Add(firstNode);
+                    dict.Add(second, secondNode);
                 }
                 else
                 {
-                    dict.Add(second, new List<Node>() { firstNode });
+                    Node node = dict[second];
+                    node.Add(firstNode);
+                    dict.Add(second, node);  
                 }
             }
         }
 
         foreach (var item in dict)
         {
-            Console.Write(item.Key + " ");
-            foreach (var val in item.Value)
+            foreach (var val in item.Value.adj)
             {
                 Console.Write(val.Name + " ");
             }
             Console.WriteLine();
         }
 
-        var startNode = new Node("start", false, false);
-        FindToPath(startNode, 0);
-        Console.WriteLine(totalPath);
+        //var startNode = new Node("start", false, false);
+        //FindToPath(startNode, 0);
+        //Console.WriteLine(totalPath);
     }
 
     public static Node makeNode(string str)
@@ -121,27 +122,27 @@ public class Program
     public static void FindToPath(Node node, int idx)
     {
 
-        if (node.Name != "end")
-        {
-            List<Node> adj = new List<Node>();
-            dict.TryGetValue(node.Name, out adj);
+        // if (node.Name != "end")
+        // {
+        //     List<Node> adj = new List<Node>();
+        //     dict.TryGetValue(node.Name, out adj);
 
-            var nextNode = adj[idx];
+        //     var nextNode = adj[idx];
 
-            if (CanVisitNode(nextNode))
-            {
-                VisitNode(nextNode);
-                FindToPath(nextNode, 0);
-            }
-            else
-            {
-                FindToPath(node, idx + 1);
-            }
-        }
-        else
-        {
-            totalPath++;
-            return;
-        }
+        //     if (CanVisitNode(nextNode))
+        //     {
+        //         VisitNode(nextNode);
+        //         FindToPath(nextNode, 0);
+        //     }
+        //     else
+        //     {
+        //         FindToPath(node, idx + 1);
+        //     }
+        // }
+        // else
+        // {
+        //     totalPath++;
+        //     return;
+        // }
     }
 }
